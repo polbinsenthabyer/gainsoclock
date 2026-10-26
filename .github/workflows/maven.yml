@@ -42,7 +42,7 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  prepare-deploy:
+  deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: build
     runs-on: [self-hosted, gainsoclock-deploy]
@@ -53,5 +53,8 @@ jobs:
           name: gainsoclock-jar
           path: ${{ runner.temp }}/gainsoclock-release
 
-      - name: Show downloaded JAR
-        run: ls -lh "${RUNNER_TEMP}/gainsoclock-release"
+      - name: Get deployment script
+        uses: actions/checkout@v7
+
+      - name: Install, restart, and check health
+        uses: bash scripts/deploy.sh "${RUNNER_TEMP}/gainsoclock-release"

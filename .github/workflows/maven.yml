@@ -47,7 +47,7 @@ jobs:
     prepare-deploy:
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       needs: build
-      runs-on: [self-hosted, gainsoclock-deploy]
+      runs-on: [ self-hosted, gainsoclock-deploy ]
       steps:
         - name: Download built JAR
           uses: actions/download-artifact@v8

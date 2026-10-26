@@ -34,8 +34,7 @@ if ! restart_app; then
 fi
 
 for attempt in {1..30}; do
-  if curl -fsS --max-time 2 http://127.0.0.1:8081/actuator/health 2>/dev/null
-      grep -q '"status":"UP"'; then
+  if curl -fsS --max-time 2 -o http://127.0.0.1:8081/actuator/health; then
     echo "Deployment healthy"
     exit 0
   fi

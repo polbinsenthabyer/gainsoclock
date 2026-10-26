@@ -10,6 +10,6 @@ public class HealthController {
 
     @GetMapping("/check")
     public String healthCheckController(){
-        return "API is Healthy!";
+        return "Gains O'clock API is Healthy!";
     }
 }

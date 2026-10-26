@@ -43,3 +43,17 @@ jobs:
         path: target/*.jar
         if-no-files-found: error
         retention-days: 7
+
+    prepare-deploy:
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      needs: build
+      runs-on: [self-hosted, gainsoclock-deploy]
+      steps:
+        - name: Download built JAR
+          uses: actions/download-artifact@v8
+          with:
+            name: gainsoclock-jar
+            path: ${{ runner.temp }}/gainsoclock-release
+
+        - name: Show downloaded JAR
+          run: ls -lh "${RUNNER_TEMP}/gainsoclock-release"

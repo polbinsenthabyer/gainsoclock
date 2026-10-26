@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.gainsoclock</groupId>
-	<artifactId>backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>gainsoclock</artifactId>
+	<version>dev.0.0.1</version>
 	<name/>
 	<description/>
 	<url/>

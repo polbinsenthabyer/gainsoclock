@@ -25,8 +25,8 @@ jobs:
       mariadb:
         image: mariadb:11
         env:
-          MARIADB_DATABASE: ${{ secrets.DATABASE_NAME}}
-          MARIADB_ROOT_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          MARIADB_DATABASE: gainsoclock_test
+          MARIADB_ROOT_PASSWORD: test
         ports:
           - 3306:3306
         options: >-
@@ -36,9 +36,9 @@ jobs:
           --health-retries=5
 
     env:
-      DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
-      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      DATASOURCE_URL: jdbc:mariadb://localhost:3306/gainsoclock_test
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: test
     steps:
       - name: Get source code
         uses: actions/checkout@v7

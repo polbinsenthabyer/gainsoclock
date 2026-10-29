@@ -9,9 +9,9 @@ import com.gainsoclock.backend.types.UserRoleType;
 import com.gainsoclock.backend.types.UserType;
 import com.gainsoclock.backend.utilities.MessageType;
 import com.gainsoclock.backend.utilities.ResponseUtility;
+import com.gainsoclock.backend.utilities.SecurityUtil;
 import com.gainsoclock.backend.utilities.UserUtility;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,6 +22,7 @@ public class EmployeeAdminServiceImpl implements EmployeeAdminService {
 
     private final UserRepository userRepository;
     private final UserUtility userUtility;
+    private final SecurityUtil securityUtil;
 
     @Override
     public ResponseDto setEmployee(EmployeeDto dto) {
@@ -46,7 +47,7 @@ public class EmployeeAdminServiceImpl implements EmployeeAdminService {
                 user.setCreatedAt(new Date());
             }
             user.setLastVisitAt(new Date());
-            user.setPassword(dto.getPassword()); // HASHING AND AUTH TO BE ADDED IN FUTURE UPDATES
+            user.setPassword(securityUtil.hashPassword(dto.getPassword()));
             user.setUpdatedBy("SYSTEM-ADMIN");
             user.setUpdatedAt(new Date());
             userRepository.save(user);

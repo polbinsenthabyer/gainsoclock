@@ -20,3 +20,5 @@ logging:
   level:
     org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration: ERROR
     org.hibernate.orm.connections.pooling: WARN
+
+#REFRESH - 0001

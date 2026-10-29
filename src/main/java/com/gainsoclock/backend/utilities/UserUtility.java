@@ -16,11 +16,8 @@ public class UserUtility {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
 
-    public ResponseDto findUserByUsername(String username){
-        User user =  userRepository.findByUsername(username).orElse(null);
-
-        return user != null ? ResponseUtility.getSuccessResponse(MessageType.SUCCESSFULLY_FETCH_USER_DATA, user)
-                : ResponseUtility.getSuccessResponse(MessageType.ERROR_USER_NOT_EXIST);
+    public User findByUsername(String username){
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     public ResponseDto findUserById(long userId){
@@ -31,8 +28,8 @@ public class UserUtility {
     }
 
     public Boolean isUserExistByUsername(String username){
-        ResponseDto res = findUserByUsername(username);
-        return res.getData() != null;
+        User res = findByUsername(username);
+        return res != null;
     }
 
     public Boolean isUserExistById(long userId){

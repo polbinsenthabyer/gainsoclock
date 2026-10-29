@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Gains O'clock CI
 
 on:
   push:
@@ -39,6 +39,8 @@ jobs:
       DATASOURCE_URL: jdbc:mariadb://localhost:3306/gainsoclock_test
       DATABASE_USERNAME: root
       DATABASE_PASSWORD: test
+      JWT_SECRET_KEY: dummy_secret_key
+      JWT_TOKEN_EXPIRATION: 12345
     steps:
       - name: Get source code
         uses: actions/checkout@v7

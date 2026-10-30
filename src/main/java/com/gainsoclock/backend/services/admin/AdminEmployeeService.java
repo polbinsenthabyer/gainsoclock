@@ -1,4 +1,4 @@
-package com.gainsoclock.backend.services.admin.employee;
+package com.gainsoclock.backend.services.admin;
 
 import com.gainsoclock.backend.dtos.EmployeeDto;
 import com.gainsoclock.backend.dtos.EmployeeListDto;

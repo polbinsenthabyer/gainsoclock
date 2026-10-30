@@ -3,7 +3,7 @@ package com.gainsoclock.backend.controllers.admin;
 import com.gainsoclock.backend.dtos.EmployeeDto;
 import com.gainsoclock.backend.dtos.EmployeeListDto;
 import com.gainsoclock.backend.dtos.ResponseDto;
-import com.gainsoclock.backend.services.admin.employee.AdminEmployeeService;
+import com.gainsoclock.backend.services.admin.AdminEmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

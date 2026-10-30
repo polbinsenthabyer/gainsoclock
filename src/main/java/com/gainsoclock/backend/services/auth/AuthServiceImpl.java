@@ -57,8 +57,7 @@ public class AuthServiceImpl implements AuthService{
             user.setUpdatedAt(new Date());
             userRepository.save(user);
         } catch (Exception e){
-
-            return ResponseUtility.getErrorResponse("E9999", MessageType.ERROR_FAILED_TO_CREATE_ACCOUNT);
+            return ResponseUtility.getErrorResponse("E9999", MessageType.ERROR_SOMETHING_WENT_WRONG);
         }
 
         return ResponseUtility.getSuccessResponse(MessageType.SUCCESSFULLY_SET_ACCOUNT);

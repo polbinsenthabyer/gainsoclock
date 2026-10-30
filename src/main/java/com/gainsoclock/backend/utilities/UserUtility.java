@@ -9,6 +9,9 @@ import com.gainsoclock.backend.types.UserRoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.security.Principal;
+import java.util.Set;
+
 @Component
 @RequiredArgsConstructor
 public class UserUtility {
@@ -40,5 +43,18 @@ public class UserUtility {
     public Long findUserRoleIdByUserRoleType(UserRoleType userRoleType){
         UserRole role = userRoleRepository.findUserRoleByRoleName(userRoleType.name());
         return role.getId();
+    }
+
+    public UserRole findUserRoleByUserRoleId(Long roleId){
+        return userRoleRepository.findById(roleId).orElse(null);
+    }
+
+    public User findUserByPrincipal(Principal principal) {
+        return findByUsername(principal.getName());
+    }
+
+    public boolean hasAnyAdministrativeRole(User user) {
+        UserRole userRole = findUserRoleByUserRoleId(user.getUserRoleId());
+        return Set.of(UserRoleType.ADMIN.name(), UserRoleType.OWNER.name()).contains(userRole.getRoleName());
     }
 }

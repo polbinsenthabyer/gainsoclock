@@ -4,7 +4,7 @@ import com.gainsoclock.backend.dtos.EmployeeDto;
 import com.gainsoclock.backend.dtos.EmployeeListDto;
 import com.gainsoclock.backend.dtos.ResponseDto;
 
-public interface EmployeeAdminService {
+public interface AdminEmployeeService {
 
     ResponseDto setEmployee(EmployeeDto dto);
 

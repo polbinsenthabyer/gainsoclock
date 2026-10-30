@@ -18,7 +18,7 @@ import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
-public class EmployeeAdminServiceImpl implements EmployeeAdminService {
+public class AdminEmployeeServiceImpl implements AdminEmployeeService {
 
     private final UserRepository userRepository;
     private final UserUtility userUtility;

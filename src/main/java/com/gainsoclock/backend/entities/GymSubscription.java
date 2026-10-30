@@ -1,4 +1,4 @@
-package com.gainsoclock.backend.dtos;
+package com.gainsoclock.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;

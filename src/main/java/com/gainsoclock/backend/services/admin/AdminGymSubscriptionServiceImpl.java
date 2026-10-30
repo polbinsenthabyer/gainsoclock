@@ -1,6 +1,6 @@
 package com.gainsoclock.backend.services.admin;
 
-import com.gainsoclock.backend.dtos.GymSubscription;
+import com.gainsoclock.backend.entities.GymSubscription;
 import com.gainsoclock.backend.dtos.GymSubscriptionDto;
 import com.gainsoclock.backend.dtos.GymSubscriptionListDto;
 import com.gainsoclock.backend.dtos.ResponseDto;

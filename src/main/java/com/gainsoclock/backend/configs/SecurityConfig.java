@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "OWNER")
                         .requestMatchers("/api/owner/**").hasAnyRole("ADMIN", "OWNER")
                         .requestMatchers("/api/employee/**").hasAnyRole("ADMIN", "OWNER", "EMPLOYEE")
+                        .requestMatchers("/api/coach/**").hasRole("COACH")
                         .requestMatchers("/api/client/**").hasRole("CLIENT")
                 )
                 .exceptionHandling(handle ->

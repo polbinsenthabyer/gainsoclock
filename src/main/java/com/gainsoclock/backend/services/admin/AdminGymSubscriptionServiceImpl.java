@@ -10,8 +10,6 @@ import com.gainsoclock.backend.utilities.MessageType;
 import com.gainsoclock.backend.utilities.ResponseUtility;
 import com.gainsoclock.backend.utilities.UserUtility;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.aspectj.bridge.Message;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;

@@ -1,115 +1,75 @@
-# Gainsoclock App
+# React + TypeScript + Vite
 
-Gainsoclock App is a full-stack application with a Spring Boot API, a React frontend, and a MariaDB database.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-> This is a starter README. The commands below assume separate `backend/` and `frontend/` folders, a Maven wrapper, and a Vite-based React app. Update the paths, scripts, endpoint names, and deployment details to match your repository.
+Currently, two official plugins are available:
 
-## Stack
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-| Part | Technology | Purpose |
-| --- | --- | --- |
-| Frontend | React | User interface |
-| Backend | Java 17, Spring Boot | API and business logic |
-| Database | MariaDB | Persistent data |
-| Build | Maven, npm | Compile, test, and package the applications |
-| Deployment | Ubuntu, GitHub Actions | Run the application and automate releases |
-| Public access | Cloudflare, optionally Nginx | Route requests to the server |
+## React Compiler
 
-## Request flow
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-```text
-Browser → Cloudflare → Nginx → React frontend
-                            └── /api → Spring Boot → MariaDB
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+
 ```
 
-The API sends its response back through Nginx and Cloudflare to the browser. If Nginx is not yet configured, update this diagram to show your current route.
+You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
 
-## Prerequisites
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-- JDK 17
-- Node.js and npm
-- MariaDB
-- Git
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 
-## Run locally
-
-### 1. Configure the backend
-
-Set the database connection and any application secrets using your local environment or an untracked configuration file. Check the backend's `application.yml` for the exact property names. Do not commit passwords, database credentials, or JWT signing keys.
-
-### 2. Start the API
-
-```bash
-cd backend
-./mvnw spring-boot:run
 ```
-
-If your Spring Boot project is at the repository root, run `./mvnw spring-boot:run` there instead. On Windows Command Prompt, use `mvnw.cmd`.
-
-The example deployment uses port **8081**. Verify the port in your backend configuration, then check the health endpoint:
-
-```bash
-curl http://localhost:8081/actuator/health
-```
-
-### 3. Start React
-
-In another terminal:
-
-```bash
-cd frontend
-npm ci
-npm run dev
-```
-
-Open the local URL printed by the frontend development server. Configure the frontend's API base URL to point at your local Spring Boot API, or configure a development proxy. If you use Vite, remember that only variables prefixed with `VITE_` are exposed to frontend code.
-
-## Build and test
-
-```bash
-cd backend
-./mvnw clean verify
-```
-
-```bash
-cd frontend
-npm ci
-npm run build
-```
-
-The backend JAR is normally produced under `backend/target/`. A Vite frontend normally produces static files under `frontend/dist/`. Check your project configuration for the actual output paths.
-
-## API
-
-| Method | Path | Description | Access |
-| --- | --- | --- | --- |
-| `GET` | `/actuator/health` | Application health | Configure for deployment checks |
-| TODO | TODO | Add your API endpoints | TODO |
-
-Add request and response examples as the API grows. Avoid returning JPA entities that include passwords or other private fields; use response DTOs.
-
-## Deployment
-
-The intended release flow is:
-
-1. A push to `main` starts GitHub Actions.
-2. CI builds and tests the backend, then saves the JAR as an artifact.
-3. A deployment job downloads the tested JAR on the Ubuntu runner.
-4. A deployment script installs the JAR, restarts the Spring Boot service, and checks `/actuator/health`.
-5. A frontend deployment can build React and publish its static files for Nginx to serve.
-
-Keep MariaDB private to the server or trusted network. Point Cloudflare at the public-facing service you actually use, such as Nginx. Update this section when the frontend deployment is implemented.
-
-## Project layout
-
-```text
-.
-├── backend/                 # Spring Boot application (example path)
-├── frontend/                # React application (example path)
-├── scripts/                 # Deployment scripts, if present
-└── .github/workflows/       # CI/CD workflows
-```
-
-## License
-
-Add your license information here.

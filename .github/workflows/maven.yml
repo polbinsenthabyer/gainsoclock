@@ -10,9 +10,9 @@ name: Gains O'clock CI
 
 on:
   push:
-    branches: [main]
+    branches: [live/api/gainsoclock]
   pull_request:
-    branches: [main]
+    branches: [live/api/gainsoclock]
 
 permissions:
   contents: read
@@ -64,7 +64,7 @@ jobs:
           retention-days: 7
 
   deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/live/api/gainsoclock'
     needs: build
     runs-on: [self-hosted, gainsoclock-deploy]
     steps:

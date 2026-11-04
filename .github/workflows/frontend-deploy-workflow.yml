@@ -2,9 +2,9 @@ name: Gains O'clock App CI
 
 on:
   push:
-    branches: [prelive/app/gainsoclock]
+    branches: [prelive/app/gainsoclock, live/app/gainsoclock]
   pull_request:
-    branches: [prelive/app/gainsoclock]
+    branches: [prelive/app/gainsoclock, live/app/gainsoclock]
 
 permissions:
   contents: read
@@ -39,7 +39,7 @@ jobs:
           retention-days: 7
 
 
-  deploy:
+  deploy-prelive:
     if: github.event_name == 'push' && github.ref == 'refs/heads/prelive/app/gainsoclock'
     needs: build
     runs-on: [self-hosted, gainsoclock-deploy]
@@ -54,5 +54,24 @@ jobs:
       - name: Get deployment script
         uses: actions/checkout@v7
 
-      - name: Deploy Gainsoclock Prelive APP
-        run: bash scripts/deploy-prelive.sh "${RUNNER_TEMP}/gainsoclock-prelive-app-dist"
+      - name: Deploy Gains O'clock Prelive APP
+        run: bash scripts/deploy.sh "${RUNNER_TEMP}/gainsoclock-prelive-app-dist" prelive
+
+
+  deploy-live:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/live/app/gainsoclock'
+    needs: build
+    runs-on: [ self-hosted, gainsoclock-deploy ]
+
+    steps:
+      - name: Download built files
+        uses: actions/download-artifact@v8
+        with:
+          name: gainsoclock-prelive-app
+          path: ${{ runner.temp }}/gainsoclock-live-app-dist
+
+      - name: Get deployment script
+        uses: actions/checkout@v7
+
+      - name: Deploy Gains O'clock Prelive APP
+        run: bash scripts/deploy.sh "${RUNNER_TEMP}/gainsoclock-live-app-dist" live

@@ -3,6 +3,7 @@ package com.gainsoclock.backend.utilities;
 public class MessageType {
 
     public static final String API_HEALTH_CHECK = "Gains O'clock API is healthy!!!";
+    public static final String API_PRELIVE_HEALTH_CHECK = "Gains O'clock PRELIVE API is healthy!";
 
     public static final String ERROR_NO_PERMISSION = "ERROR YOU DON'T HAVE PERMISSION";
     public static final String ERROR_DTO_IS_NULL_OR_INCOMPLETE = "ERROR DTO IS NULL";

@@ -10,9 +10,9 @@ name: Gains O'clock CI
 
 on:
   push:
-    branches: [live/api/gainsoclock]
+    branches: [prelive/api/gainsoclock, live/api/gainsoclock]
   pull_request:
-    branches: [live/api/gainsoclock]
+    branches: [prelive/api/gainsoclock, live/api/gainsoclock]
 
 permissions:
   contents: read
@@ -64,7 +64,24 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  deploy:
+  deploy-prelive:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/prelive/api/gainsoclock'
+    needs: build
+    runs-on: [self-hosted, gainsoclock-deploy]
+    steps:
+      - name: Download built JAR
+        uses: actions/download-artifact@v8
+        with:
+          name: gainsoclock-jar
+          path: ${{ runner.temp }}/gainsoclock-release
+
+      - name: Get deployment script
+        uses: actions/checkout@v7
+
+      - name: Deploy to prelive
+        run: bash scripts/deploy-prelive.sh "${RUNNER_TEMP}/gainsoclock-release"
+
+  deploy-live:
     if: github.event_name == 'push' && github.ref == 'refs/heads/live/api/gainsoclock'
     needs: build
     runs-on: [self-hosted, gainsoclock-deploy]
@@ -78,5 +95,5 @@ jobs:
       - name: Get deployment script
         uses: actions/checkout@v7
 
-      - name: Install, restart, and check health
+      - name: Deploy to live
         run: bash scripts/deploy.sh "${RUNNER_TEMP}/gainsoclock-release"

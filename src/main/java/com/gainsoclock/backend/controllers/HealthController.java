@@ -15,4 +15,9 @@ public class HealthController {
     public ResponseDto healthCheckController(){
         return ResponseUtility.getSuccessResponse(MessageType.API_HEALTH_CHECK);
     }
+
+    @GetMapping("/check/prelive")
+    public ResponseDto preliveHealthCheckController(){
+        return ResponseUtility.getSuccessResponse(MessageType.API_PRELIVE_HEALTH_CHECK);
+    }
 }

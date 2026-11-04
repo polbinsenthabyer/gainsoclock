@@ -1,0 +1,58 @@
+name: Gains O'clock App CI
+
+on:
+  push:
+    branches: [prelive/app/gainsoclock]
+  pull_request:
+    branches: [prelive/app/gainsoclock]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get frontend source
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build React App
+        run: npm run build
+
+      - name: Save built files
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v7
+        with:
+          name: gainsoclock-prelive-app
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
+
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/prelive/app/gainsoclock'
+    needs: build
+    runs-on: [self-hosted, gainsoclock-deploy]
+
+    steps:
+      - name: Download built files
+        uses: actions/download-artifact@v8
+        with:
+          name: gainsoclock-prelive-app
+          path: ${{ runner.temp }}/gainsoclock-prelive-app-dist
+
+      - name: Get deployment script
+        uses: actions/checkout@v7
+
+      - name: Deploy Gainsoclock Prelive APP
+        run: bash scripts/deploy-prelive.sh "${RUNNER_TEMP}/gainsoclock-prelive-app-dist"

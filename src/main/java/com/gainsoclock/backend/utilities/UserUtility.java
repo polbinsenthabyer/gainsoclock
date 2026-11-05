@@ -57,4 +57,9 @@ public class UserUtility {
         UserRole userRole = findUserRoleByUserRoleId(user.getUserRoleId());
         return Set.of(UserRoleType.ADMIN.name(), UserRoleType.OWNER.name()).contains(userRole.getRoleName());
     }
+
+    public boolean hasClientRole(User user) {
+        UserRole userRole = findUserRoleByUserRoleId(user.getUserRoleId());
+        return userRole.getRoleName().equals(UserRoleType.CLIENT.name());
+    }
 }

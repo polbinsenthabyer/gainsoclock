@@ -8,20 +8,25 @@ import com.gainsoclock.backend.repositories.UserGymSubscriptionRepository;
 import com.gainsoclock.backend.types.GymSubscriptionStatusType;
 import com.gainsoclock.backend.types.RequestStatusType;
 import com.gainsoclock.backend.utilities.MessageType;
+import com.gainsoclock.backend.utilities.QRCodeUtil;
 import com.gainsoclock.backend.utilities.ResponseUtility;
 import com.gainsoclock.backend.utilities.UserUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.ObjectMapper;
 
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class AdminGymClientSubscriptionServiceImpl implements AdminGymClientSubscriptionService{
 
     private final UserGymSubscriptionRepository userGymSubscriptionRepository;
+    private final ObjectMapper objectMapper;
+    private final QRCodeUtil qrCodeUtil;
     private final UserUtility userUtility;
 
     @Override
@@ -61,6 +66,7 @@ public class AdminGymClientSubscriptionServiceImpl implements AdminGymClientSubs
     private ResponseDto processApprovalOfClientGymSubscriptionRequest(User user, UserGymSubscription request) {
         request.setUpdatedBy(user.getUsername());
         request.setUpdatedAt(new Date());
+        request.setSnapshot(generateSnapshot(user, request, RequestStatusType.APPROVED));
         request.setGymSubscriptionStatus(GymSubscriptionStatusType.ACTIVE);
         userGymSubscriptionRepository.save(request);
 
@@ -70,9 +76,20 @@ public class AdminGymClientSubscriptionServiceImpl implements AdminGymClientSubs
     private ResponseDto processRejectionOfClientGymSubscriptionRequest(User user, UserGymSubscription request) {
         request.setUpdatedBy(user.getUsername());
         request.setUpdatedAt(new Date());
+        request.setSnapshot(generateSnapshot(user, request, RequestStatusType.REJECTED));
         request.setGymSubscriptionStatus(GymSubscriptionStatusType.REJECTED);
         userGymSubscriptionRepository.save(request);
 
         return ResponseUtility.getSuccessResponse(MessageType.SUCCESSFULLY_PROCESSED_CLIENT_GYM_SUBSCRIPTION_REQUEST);
+    }
+
+    private String generateSnapshot(User user, UserGymSubscription request, RequestStatusType status) {
+        return objectMapper.writeValueAsString(Map.of(
+                "processedBy", user.getName(),
+                "userGymSubscriptionId", request.getId(),
+                "subscriptionToken", status.equals(RequestStatusType.APPROVED) ? qrCodeUtil.processQRCode(user, request) : "",
+                "subscriptionStatus", status,
+                "createdAt", new Date()
+        ));
     }
 }

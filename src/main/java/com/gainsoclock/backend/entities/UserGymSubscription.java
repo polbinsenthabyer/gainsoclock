@@ -37,8 +37,8 @@ public class UserGymSubscription {
     @Column(name = "gym_subscription_end_date")
     private Date gymSubscriptionEndDate;
 
-    @Column(name = "gym_subscription_qr_code")
-    private String gymSubscriptionQRCode;
+    @Column(name = "snapshot")
+    private String snapshot;
 
     @Column(name = "created_by")
     private String createdBy;

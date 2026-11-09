@@ -8,7 +8,7 @@ import com.gainsoclock.backend.entities.User;
 import com.gainsoclock.backend.entities.UserGymSubscription;
 import com.gainsoclock.backend.repositories.GymSubscriptionRepository;
 import com.gainsoclock.backend.repositories.UserGymSubscriptionRepository;
-import com.gainsoclock.backend.types.GymSubscriptionStatus;
+import com.gainsoclock.backend.types.GymSubscriptionStatusType;
 import com.gainsoclock.backend.utilities.MessageType;
 import com.gainsoclock.backend.utilities.ResponseUtility;
 import com.gainsoclock.backend.utilities.UserUtility;
@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,12 +43,12 @@ public class ClientGymSubscriptionServiceImpl implements ClientGymSubscriptionSe
             return ResponseUtility.getErrorResponse("E0003",MessageType.ERROR_NO_PERMISSION);
         }
 
-        UserGymSubscription hasActiveGymSubscription = userGymSubscriptionRepository.findByUserIdAndGymSubscriptionStatus(user.getId(), GymSubscriptionStatus.ACTIVE.name()).orElse(null);
+        UserGymSubscription hasActiveGymSubscription = userGymSubscriptionRepository.findByUserIdAndGymSubscriptionStatus(user.getId(), GymSubscriptionStatusType.ACTIVE.name()).orElse(null);
         if (hasActiveGymSubscription != null){
             return ResponseUtility.getErrorResponse("E0004", MessageType.ERROR_USER_HAS_ACTIVE_SUBSCRIPTION);
         }
 
-        UserGymSubscription hasPendingRequestGymSubscription = userGymSubscriptionRepository.findByUserIdAndGymSubscriptionStatus(user.getId(), GymSubscriptionStatus.REQUESTED.name()).orElse(null);
+        UserGymSubscription hasPendingRequestGymSubscription = userGymSubscriptionRepository.findByUserIdAndGymSubscriptionStatus(user.getId(), GymSubscriptionStatusType.REQUESTED.name()).orElse(null);
         if (hasPendingRequestGymSubscription != null){
             return ResponseUtility.getErrorResponse("E0004", MessageType.ERROR_USER_HAS_PENDING_SUBSCRIPTION_REQUEST);
         }
@@ -84,7 +83,7 @@ public class ClientGymSubscriptionServiceImpl implements ClientGymSubscriptionSe
         return UserGymSubscription.builder()
                 .userId(user.getId())
                 .gymSubscriptionType(subscription.getGymSubscriptionType())
-                .gymSubscriptionStatus(GymSubscriptionStatus.REQUESTED)
+                .gymSubscriptionStatus(GymSubscriptionStatusType.REQUESTED)
                 .gymSubscriptionStartDate(dto.getGymSubscriptionRequestStartDate())
                 .gymSubscriptionEndDate(dto.getGymSubscriptionRequestEndDate())
                 .createdAt(new Date())

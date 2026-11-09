@@ -1,7 +1,7 @@
 package com.gainsoclock.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.gainsoclock.backend.types.GymSubscriptionStatus;
+import com.gainsoclock.backend.types.GymSubscriptionStatusType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,13 +29,16 @@ public class UserGymSubscription {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gym_subscription_status")
-    private GymSubscriptionStatus gymSubscriptionStatus;
+    private GymSubscriptionStatusType gymSubscriptionStatus;
 
     @Column(name = "gym_subscription_start_date")
     private Date gymSubscriptionStartDate;
 
     @Column(name = "gym_subscription_end_date")
     private Date gymSubscriptionEndDate;
+
+    @Column(name = "gym_subscription_qr_code")
+    private String gymSubscriptionQRCode;
 
     @Column(name = "created_by")
     private String createdBy;

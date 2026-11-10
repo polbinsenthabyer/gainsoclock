@@ -13,13 +13,14 @@ public class UserGymSubscriptionQr {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_gym_subscription_qr_id")
     private long id;
 
     @Column(name = "user_gym_subscription_id")
     private long userGymSubscriptionId;
 
     @Column(name = "user_gym_subscription_qr_token")
-    private String userGymSubscriptionQRTOken;
+    private String userGymSubscriptionQRToken;
 
     @Column(name = "is_qr_token_active")
     private Boolean isQRTokenActive;

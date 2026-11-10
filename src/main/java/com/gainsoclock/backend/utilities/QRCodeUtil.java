@@ -34,7 +34,7 @@ public class QRCodeUtil {
         String token = generateQRToken();
 
         qr.setUserGymSubscriptionId(request.getId());
-        qr.setUserGymSubscriptionQRTOken(token);
+        qr.setUserGymSubscriptionQRToken(token);
         qr.setIsQRTokenActive(Boolean.TRUE);
         qr.setCreatedAt(new Date());
         qr.setCreatedBy(user.getUsername());
@@ -45,13 +45,12 @@ public class QRCodeUtil {
         return token;
     }
 
-    public ResponseDto generateQRCode(String token)
-            throws WriterException, IOException {
+    public ResponseDto generateQRCode(String token) {
         try {
             BitMatrix matrix = QR_CODE_WRITER.encode(token, BarcodeFormat.QR_CODE, 300, 300);
             MatrixToImageWriter.writeToStream(matrix, "PNG", OUTPUT);
             return ResponseUtility.getSuccessResponse(MessageType.SUCCESSFULLY_GENERATED_QR_CODE, OUTPUT.toByteArray());
-        } catch (Exception e){
+        } catch (WriterException | IOException e){
             return ResponseUtility.getSuccessResponse(MessageType.ERROR_FAILED_TO_GENERATE_QR_CODE);
         }
     }

@@ -4,12 +4,10 @@ import com.gainsoclock.backend.dtos.ResponseDto;
 import com.gainsoclock.backend.entities.User;
 import com.gainsoclock.backend.entities.UserGymSubscription;
 import com.gainsoclock.backend.entities.UserGymSubscriptionQr;
+import com.gainsoclock.backend.repositories.UserGymActivityLogRepository;
 import com.gainsoclock.backend.repositories.UserGymSubscriptionQrRepository;
 import com.gainsoclock.backend.repositories.UserGymSubscriptionRepository;
-import com.gainsoclock.backend.utilities.MessageType;
-import com.gainsoclock.backend.utilities.QRCodeUtil;
-import com.gainsoclock.backend.utilities.ResponseUtility;
-import com.gainsoclock.backend.utilities.UserUtility;
+import com.gainsoclock.backend.utilities.*;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
@@ -29,6 +27,7 @@ public class QRCodeServiceImpl implements  QRCodeService {
 
     private final UserGymSubscriptionQrRepository userGymSubscriptionQrRepository;
     private final UserGymSubscriptionRepository userGymSubscriptionRepository;
+    private final UserActivityUtil userActivityUtil;
     private final UserUtility userUtility;
     private final QRCodeUtil qrCodeUtil;
 
@@ -94,7 +93,7 @@ public class QRCodeServiceImpl implements  QRCodeService {
             BufferedImage img = ImageIO.read(inputStream);
 
             if (img == null){
-                return ResponseUtility.getErrorResponse("E9999", MessageType.ERROR_SOMETHING_WENT_WRONG);
+                return ResponseUtility.getErrorResponse("E0005", MessageType.ERROR_NO_INPUT_FILE_DETECTED);
             }
 
             BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(img)));
@@ -104,16 +103,14 @@ public class QRCodeServiceImpl implements  QRCodeService {
              UserGymSubscriptionQr subscription = userGymSubscriptionQrRepository.findByUserGymSubscriptionQRToken(qrToken).orElse(null);
 
              if (subscription == null){
-                 return ResponseUtility.getErrorResponse("E9999", MessageType.ERROR_SOMETHING_WENT_WRONG);
+                 return ResponseUtility.getErrorResponse("E0006", MessageType.ERROR_USER_GYM_SUBSCRIPTION_QR_NOT_FOUND);
              }
 
              if (!subscription.getIsQRTokenActive()){
                  return ResponseUtility.getErrorResponse("E0007", MessageType.ERROR_USER_GYM_SUBSCRIPTION_QR_NOT_ACTIVE);
              }
 
-            // ADD LOGGING OF CLIENT
-
-            return ResponseUtility.getSuccessResponse(MessageType.SUCCESSFULLY_SCANNED_QR_CODE);
+             return userActivityUtil.logSubscribedMemberActivity(user, subscription);
 
         }catch (Exception e){
             return ResponseUtility.getErrorResponse("E9999", MessageType.ERROR_SOMETHING_WENT_WRONG);

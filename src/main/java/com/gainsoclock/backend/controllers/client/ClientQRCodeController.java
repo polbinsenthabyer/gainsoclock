@@ -4,14 +4,13 @@ import com.gainsoclock.backend.dtos.ResponseDto;
 import com.gainsoclock.backend.services.client.QRCodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/client/qr/code")
-public class QRCodeController {
+public class ClientQRCodeController {
 
     private final QRCodeService qrCodeService;
 

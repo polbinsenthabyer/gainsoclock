@@ -21,10 +21,4 @@ public class QRCodeController {
         return qrCodeService.generateQRCode(principal, subscriptionId);
     }
 
-    // SCAN QR CODE
-    @PostMapping("/scan")
-    public ResponseDto scanQRCode(Principal principal, @RequestPart("qr")MultipartFile qr){
-        return qrCodeService.scanQRCode(principal, qr);
-    }
-
 }

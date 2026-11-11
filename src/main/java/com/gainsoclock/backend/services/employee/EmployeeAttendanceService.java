@@ -9,7 +9,7 @@ import com.gainsoclock.backend.types.EmployeeAttendanceActionType;
 import java.security.Principal;
 
 public interface EmployeeAttendanceService {
-    ResponseDto employeeAttendance(Principal action, EmployeeAttendanceActionType employeeId, EmployeeAttendanceDto dto);
+    ResponseDto employeeAttendance(Principal principal, EmployeeAttendanceActionType attendanceAction, EmployeeAttendanceDto dto);
 
     ResponseDto listEmployeeAttendance(Principal principal, EmployeeAttendanceListDto dto);
 }

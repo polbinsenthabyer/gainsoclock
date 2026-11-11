@@ -18,8 +18,8 @@ public class EmployeeAttendanceController {
     private final EmployeeAttendanceService employeeAttendanceService;
 
     @PostMapping("/{attendanceAction}")
-    public ResponseDto employeeAttendance(Principal principal, @PathVariable EmployeeAttendanceActionType action, @RequestBody EmployeeAttendanceDto dto){
-        return employeeAttendanceService.employeeAttendance(principal, action, dto);
+    public ResponseDto employeeAttendance(Principal principal, @PathVariable EmployeeAttendanceActionType attendanceAction, @RequestBody EmployeeAttendanceDto dto){
+        return employeeAttendanceService.employeeAttendance(principal, attendanceAction, dto);
     }
 
     @GetMapping("/list")
